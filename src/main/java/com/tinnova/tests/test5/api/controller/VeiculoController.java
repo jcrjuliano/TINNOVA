@@ -1,6 +1,7 @@
 package com.tinnova.tests.test5.api.controller;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tinnova.tests.test5.domain.exception.EntidadeNaoEncontradaException;
 import com.tinnova.tests.test5.domain.model.Veiculo;
+import com.tinnova.tests.test5.domain.model.dto.DistribuicaoPorDecada;
+import com.tinnova.tests.test5.domain.model.dto.DistribuicaoPorFabricante;
 import com.tinnova.tests.test5.domain.repository.VeiculoRepository;
 import com.tinnova.tests.test5.domain.service.VeiculoService;
 
@@ -52,9 +55,26 @@ public class VeiculoController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@GetMapping("/decada/{decada}")
-	public List<Veiculo> buscarPorDecada(@PathVariable Integer decada){
-		return veiculoRepository.buscaPorDecada(decada);
+	@GetMapping("/por-decada")
+	public List<DistribuicaoPorDecada> buscarPorDecada(){
+		return veiculoRepository.buscaPorDecada();
+	}
+	
+	@GetMapping("/por-fabricante")
+	public List<DistribuicaoPorFabricante> buscarPorFabricante(){
+		return veiculoRepository.buscaPorFabricante();
+	}
+	
+	@GetMapping("/ultima-semana")
+	public List<Veiculo> buscaRegistradosNaUltimaSemana(){
+	    Date fim = new Date(new Date().getTime() - 7 * 24 * 3600 * 1000l); 
+		
+		return veiculoRepository.buscaUltimaSemana(fim);
+	}
+	
+	@GetMapping("/disponiveis")
+	public Integer exibirQuantidadeDeNaoVendidos() {
+		return veiculoRepository.findByVendidoFalse().size();
 	}
 	
 	@PostMapping

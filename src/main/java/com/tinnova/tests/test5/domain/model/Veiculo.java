@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.PreUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tinnova.tests.test5.domain.model.enums.MarcasEnum;
 
 @Entity
@@ -26,7 +29,8 @@ public class Veiculo {
 	private String veiculo;
 	
 	@Column
-	private Enum<MarcasEnum> marca;
+	@Enumerated(EnumType.STRING)
+	private MarcasEnum marca;
 	
 	@Column
 	private Integer ano;
@@ -37,6 +41,9 @@ public class Veiculo {
 	@Column
 	private Boolean vendido;
 	
+	@JsonIgnore
+	private Integer decada;
+	
 	@Column
 	@CreatedDate
 	private Date created;
@@ -45,10 +52,10 @@ public class Veiculo {
 	@LastModifiedDate
 	private Date updated;
 
-	public Veiculo(Long id, String veiculo, String marca, Integer ano, String descricao, Boolean vendido) {
+	public Veiculo(Long id, String veiculo, MarcasEnum marca, Integer ano, String descricao, Boolean vendido) {
 		this.id = id;
 		this.veiculo = veiculo;
-		this.marca = MarcasEnum.valueOf(marca);
+		this.marca = marca;
 		this.ano = ano;
 		this.descricao = descricao;
 		this.vendido = vendido;
@@ -60,6 +67,8 @@ public class Veiculo {
     protected void prePersist() {
         if (this.created == null) created = new Date();
         if (this.updated == null) updated = new Date();
+        if (this.decada == null) updateDecada();
+        
     }
 	
 	@PreUpdate
@@ -69,6 +78,10 @@ public class Veiculo {
 	 
 	public Veiculo() {
 		
+	}
+	
+	public void updateDecada() {
+		setDecada(Integer.valueOf(ano/10 + "0"));
 	}
 
 	public Long getId() {
@@ -87,12 +100,12 @@ public class Veiculo {
 		this.veiculo = veiculo;
 	}
 
-	public String getMarca() {
-		return marca.toString();
+	public MarcasEnum getMarca() {
+		return marca;
 	}
 
-	public void setMarca(String marca) {
-		this.marca = MarcasEnum.valueOf(marca);
+	public void setMarca(MarcasEnum marca) {
+		this.marca = marca;
 	}
 
 	public Integer getAno() {
@@ -101,6 +114,7 @@ public class Veiculo {
 
 	public void setAno(Integer ano) {
 		this.ano = ano;
+		updateDecada();
 	}
 
 	public String getDescricao() {
@@ -119,12 +133,12 @@ public class Veiculo {
 		this.vendido = vendido;
 	}
 
-	public Date getCreatead() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreatead(Date createad) {
-		this.created = createad;
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 	public Date getUpdated() {
@@ -134,5 +148,16 @@ public class Veiculo {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
+
+	public Integer getDecada() {
+		return decada;
+	}
+
+	public void setDecada(Integer decada) {
+		this.decada = decada;
+	}
+
+	
+	
 	
 }

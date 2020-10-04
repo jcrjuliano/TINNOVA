@@ -1,6 +1,10 @@
 package com.tinnova.tests.test5.infrastructure.repository;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.tinnova.tests.test5.domain.model.Veiculo;
+import com.tinnova.tests.test5.domain.model.dto.DistribuicaoPorFabricante;
 import com.tinnova.tests.test5.domain.repository.VeiculoRepositoryQuery;
 
 @Repository
@@ -24,7 +29,7 @@ public class VeiculoRepositoryImpl implements VeiculoRepositoryQuery {
 	 */
 	@Override
 	public List<Veiculo> find(String veiculo, String marca, Integer ano, String descricao, Boolean vendido) {
-		var builder = manager.getCriteriaBuilder();
+var builder = manager.getCriteriaBuilder();
 		
 		var criteria = builder.createQuery(Veiculo.class);
 		var root = criteria.from(Veiculo.class);
@@ -57,23 +62,20 @@ public class VeiculoRepositoryImpl implements VeiculoRepositoryQuery {
 		return query.getResultList();
 	}
 	
-	/*
-	 * Query para buscar pela decada usando JPA
-	 */
+
+
 	@Override
-	public List<Veiculo> buscaPorDecada(Integer decada){
-		
+	public List<DistribuicaoPorFabricante> buscaPorFabricante() {
 		var builder = manager.getCriteriaBuilder();
+		var query = builder.createQuery(DistribuicaoPorFabricante.class);
+		var root = query.from(Veiculo.class);
 		
-		var criteria = builder.createQuery(Veiculo.class);
-		var root = criteria.from(Veiculo.class);		
+		var selection = builder.construct(DistribuicaoPorFabricante.class, root.get("marca"), builder.count(root.get("id")));
 		
-		Predicate decadaPredicate = builder.between(root.get("ano"), decada, decada+9);
-				
-		criteria.where(decadaPredicate);
+		query.select(selection);
+		query.groupBy(root.get("marca"));
+		return manager.createQuery(query).getResultList();
 		
-		var query = manager.createQuery(criteria);
-		return query.getResultList();		
 	}
 	
 }
