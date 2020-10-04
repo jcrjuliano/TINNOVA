@@ -126,5 +126,5 @@ Exemplo:<br />
 **Resultado esperado:** Registro excluído do banco de dados, Http Status 204 - No content.<br />
 
 ## Author
-<br />
-* **Juliano Rosa** - [jcrjuliano](https://github.com/jcrjuliano)
+
+**Juliano Rosa** - [jcrjuliano](https://github.com/jcrjuliano)
