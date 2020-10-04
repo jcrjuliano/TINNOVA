@@ -18,6 +18,9 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, Long>, Veiculo
 	@Query("SELECT new com.tinnova.tests.test5.domain.model.dto.DistribuicaoPorDecada(v.decada, COUNT(*)) FROM Veiculo AS v GROUP BY v.decada")
 	List<DistribuicaoPorDecada> buscaPorDecada();
 	
+	@Query("SELECT new com.tinnova.tests.test5.domain.model.dto.DistribuicaoPorDecada(v.decada, COUNT(*)) FROM Veiculo AS v where v.vendido = FALSE GROUP BY v.decada")
+	List<DistribuicaoPorDecada> buscaDisponiveisPorDecada();
+	
 	@Query("SELECT v FROM Veiculo v WHERE v.created >= :fim")
 	public List<Veiculo> buscaUltimaSemana(Date fim);
 

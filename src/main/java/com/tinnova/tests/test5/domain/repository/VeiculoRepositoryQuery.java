@@ -11,8 +11,5 @@ public interface VeiculoRepositoryQuery {
 		
 	public List<DistribuicaoPorFabricante> buscaPorFabricante();
 	
-
-	
-
-
+	public List<DistribuicaoPorFabricante> buscaDisponiveisPorFabricante();
 }

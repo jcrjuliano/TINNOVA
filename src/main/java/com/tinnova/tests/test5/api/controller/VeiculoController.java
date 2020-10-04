@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,9 +40,18 @@ public class VeiculoController {
 	@Autowired
 	private VeiculoService cadastroVeiculo;
 	
+	
+	/*
+	 * Todos veículos
+	 * Parametro Opcional: Apenas Disponiveis, para listar apenas os veículos com o flag de vendido = false.
+	 * Parametro de URL: apenasDisponiveis
+	 */		
 	@GetMapping
-	public List<Veiculo> listAll(){
-		return veiculoRepository.findAll();
+	public List<Veiculo> listAll(@RequestParam(required = false) Boolean apenasDisponiveis){
+		if (apenasDisponiveis == null) {
+			apenasDisponiveis = false;
+		}
+		return apenasDisponiveis ? veiculoRepository.findByVendidoFalse() : veiculoRepository.findAll();
 	}
 	
 	@GetMapping("/{veiculoId}")
@@ -55,14 +65,32 @@ public class VeiculoController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	/*
+	 * Busca a quantidade de veículos por década
+	 * Parametro Opcional: Apenas Disponiveis, para listar apenas os veículos com o flag de vendido = false.
+	 * Parametro de URL: apenasDisponiveis
+	 */
 	@GetMapping("/por-decada")
-	public List<DistribuicaoPorDecada> buscarPorDecada(){
-		return veiculoRepository.buscaPorDecada();
+	public List<DistribuicaoPorDecada> buscarPorDecada(@RequestParam(required = false) Boolean apenasDisponiveis){
+		if (apenasDisponiveis == null) {
+			apenasDisponiveis = false;
+		}
+		
+		return apenasDisponiveis ? veiculoRepository.buscaDisponiveisPorDecada() : veiculoRepository.buscaPorDecada();
+
 	}
 	
+	/*
+	 * Busca a quantidade de veículos por Fabricante
+	 * Parametro Opcional: Apenas Disponiveis, para listar apenas os veículos com o flag de vendido = false.
+	 * Parametro de URL: apenasDisponiveis
+	 */
 	@GetMapping("/por-fabricante")
-	public List<DistribuicaoPorFabricante> buscarPorFabricante(){
-		return veiculoRepository.buscaPorFabricante();
+	public List<DistribuicaoPorFabricante> buscarPorFabricante(@RequestParam(required = false) Boolean apenasDisponiveis){
+		if (apenasDisponiveis == null) {
+			apenasDisponiveis = false;
+		}
+		return apenasDisponiveis? veiculoRepository.buscaDisponiveisPorFabricante() : veiculoRepository.buscaPorFabricante();
 	}
 	
 	@GetMapping("/ultima-semana")
@@ -72,6 +100,9 @@ public class VeiculoController {
 		return veiculoRepository.buscaUltimaSemana(fim);
 	}
 	
+	/*
+	 * Retorna a quantidade de veículos disponíveis.
+	 */	
 	@GetMapping("/disponiveis")
 	public Integer exibirQuantidadeDeNaoVendidos() {
 		return veiculoRepository.findByVendidoFalse().size();
@@ -122,6 +153,10 @@ public class VeiculoController {
 		
 	}
 	
+	/*
+	 * Método usado para identificar e atualizar os campos apenas os campos solicitados na atualização parcial com Patch
+	 * 
+	 */
 	private void merge(Map<String, Object> dadosOrigem, Veiculo veiculoDestino) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Veiculo veiculoOrigem = objectMapper.convertValue(dadosOrigem, Veiculo.class);

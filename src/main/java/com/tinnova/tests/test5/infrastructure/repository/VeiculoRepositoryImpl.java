@@ -78,4 +78,21 @@ var builder = manager.getCriteriaBuilder();
 		
 	}
 	
+	@Override
+	public List<DistribuicaoPorFabricante> buscaDisponiveisPorFabricante() {
+		var builder = manager.getCriteriaBuilder();
+		var query = builder.createQuery(DistribuicaoPorFabricante.class);
+		var root = query.from(Veiculo.class);
+		
+		var selection = builder.construct(DistribuicaoPorFabricante.class, root.get("marca"), builder.count(root.get("id")));
+		Predicate predicate = builder.equal(root.get("vendido"), false);
+		
+		query.where(predicate);
+		
+		query.select(selection);
+		query.groupBy(root.get("marca"));
+		return manager.createQuery(query).getResultList();
+		
+	}
+	
 }
