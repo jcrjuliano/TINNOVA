@@ -20,12 +20,12 @@ User Name: sa
 Sem password.
 ```
 
-##End-points (Rotas):
+## End-points (Rotas):
 
 Todos end-points abaixo são considerados a partir do End-point:<br />
 URL: http://localhost/veiculos
 
-###**End-point de cadastro**
+### **End-point de cadastro**
 <br />
 **Verbo HTTP:** POST<br />
 **Header requerido:** <br />
@@ -45,7 +45,7 @@ Exemplo de JSON para cadastro:<br />
 Ford, Fiat, Chevrolet ou Volkswagen.<br />
 
 
-###**End-points de consulta**
+### **End-points de consulta**
 
 ###### Listar todos:
 
@@ -82,7 +82,7 @@ Caso seja inserido o valor opcional com True, trará apenas os veículos dispon�
 **URL:** /disponiveis<br />
 **Resultado esperado:** Retorna um número Inteiro correspondendo ao número de veículos disponíveis para venda no banco de dados.<br />
 
-###**End-points de Atualização**
+### **End-points de Atualização**
 
 ###### Atualizar por ID:
 
@@ -118,7 +118,7 @@ Exemplo:<br />
 
 **Resultado esperado:** Atualiza no banco de dados o registro com o ID igual ao da URL porém, apenas os valores passados no objeto no body, retorna Http Status 200 - OK, atualizado com sucesso. <br />
 
-###**End-point de Exclusão**
+### **End-point de Exclusão**
 **Verbo HTTP:** DELETE<br />
 **URL:** /{veiculoId}<br />
 **Resultado esperado:** Registro excluído do banco de dados, Http Status 204 - No content.<br />
