@@ -26,7 +26,9 @@ Todos end-points abaixo são considerados a partir do End-point:<br />
 URL: http://localhost/veiculos
 
 ### **End-point de cadastro**
-<br />
+
+###### Cadastro novo veiculo:
+
 **Verbo HTTP:** POST<br />
 **Header requerido:** <br />
 	Key: Content-Type<br />
