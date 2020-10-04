@@ -1,9 +1,9 @@
 # TINNOVA Test
-<br />
+
 Este documento contém todas as funcionálidades da API e como utilizar;
-<br />
+
 ## Getting Started
-<br />
+
 A API foi toda desenvolvida em Spring utilizando um banco de dados in-memory para testes locais.<br />
 
 ```
