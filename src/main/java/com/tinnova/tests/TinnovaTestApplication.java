@@ -9,5 +9,5 @@ public class TinnovaTestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TinnovaTestApplication.class, args);
 	}
-
+	
 }

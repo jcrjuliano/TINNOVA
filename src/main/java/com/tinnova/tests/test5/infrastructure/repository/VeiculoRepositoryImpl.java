@@ -1,10 +1,6 @@
 package com.tinnova.tests.test5.infrastructure.repository;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
